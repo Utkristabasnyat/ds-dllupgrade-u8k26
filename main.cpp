@@ -143,6 +143,32 @@ public:
     delete temp;
   }
 
+  // delete a node by its position
+  void delete_pos(int position) {
+    if (position < 0 || !head)
+      return;
+
+    Node* temp = head;
+
+    for (int i = 0; i < position && temp; i++)
+      temp = temp->next;
+
+    if (!temp)
+      return;
+
+    if (temp->prev)
+      temp->prev->next = temp->next;
+    else
+      head = temp->next;
+
+    if (temp->next)
+      temp->next->prev = temp->prev;
+    else
+      tail = temp->prev;
+
+    delete temp;
+  }
+
   void print() {
     Node* current = head;
 
@@ -197,35 +223,41 @@ int main() {
   cout << "Original list: ";
   list.print();
 
-  // delete the head by value
-  list.delete_val(10);
-  cout << "After delete_val(10): ";
+  // delete head by position
+  list.delete_pos(0);
+  cout << "After delete_pos(0) - head: ";
   list.print();
 
-  // remove the first node
-  list.pop_front();
-  cout << "After pop_front(): ";
+  // delete middle by position
+  list.delete_pos(1);
+  cout << "After delete_pos(1) - middle: ";
   list.print();
 
-  // remove the last node
-  list.pop_back();
-  cout << "After pop_back(): ";
+  // delete tail by position
+  list.delete_pos(2);
+  cout << "After delete_pos(2) - tail: ";
   list.print();
 
   cout << "Backward: ";
   list.print_reverse();
 
-  // test a list with one node
+  // test invalid positions
+  list.delete_pos(-1);
+  list.delete_pos(10);
+  cout << "After invalid positions: ";
+  list.print();
+
+  // test single-node list
   DoublyLinkedList singleList;
   singleList.push_back(99);
-  singleList.pop_back();
+  singleList.delete_pos(0);
 
-  cout << "Single-node list after pop_back(): ";
+  cout << "Single-node list after delete_pos(0): ";
   singleList.print();
 
-  // test an empty list
-  singleList.pop_back();
-  cout << "Empty list after pop_back(): ";
+  // test empty list
+  singleList.delete_pos(0);
+  cout << "Empty list after delete_pos(0): ";
   singleList.print();
 
   return 0;
