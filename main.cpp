@@ -127,6 +127,22 @@ public:
     delete temp;
   }
 
+  // remove the last node
+  void pop_back() {
+    if (!tail)
+      return;
+
+    Node* temp = tail;
+    tail = tail->prev;
+
+    if (tail)
+      tail->next = nullptr;
+    else
+      head = nullptr;
+
+    delete temp;
+  }
+
   void print() {
     Node* current = head;
 
@@ -191,20 +207,25 @@ int main() {
   cout << "After pop_front(): ";
   list.print();
 
+  // remove the last node
+  list.pop_back();
+  cout << "After pop_back(): ";
+  list.print();
+
   cout << "Backward: ";
   list.print_reverse();
 
   // test a list with one node
   DoublyLinkedList singleList;
   singleList.push_back(99);
-  singleList.pop_front();
+  singleList.pop_back();
 
-  cout << "Single-node list after pop_front(): ";
+  cout << "Single-node list after pop_back(): ";
   singleList.print();
 
   // test an empty list
-  singleList.pop_front();
-  cout << "Empty list after pop_front(): ";
+  singleList.pop_back();
+  cout << "Empty list after pop_back(): ";
   singleList.print();
 
   return 0;
