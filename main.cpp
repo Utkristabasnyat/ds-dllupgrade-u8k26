@@ -2,8 +2,6 @@
 #include <iostream>
 using namespace std;
 
-const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
-
 class DoublyLinkedList {
 private:
   struct Node {
@@ -113,11 +111,29 @@ public:
     delete temp;
   }
 
+  // remove the first node
+  void pop_front() {
+    if (!head)
+      return;
+
+    Node* temp = head;
+    head = head->next;
+
+    if (head)
+      head->prev = nullptr;
+    else
+      tail = nullptr;
+
+    delete temp;
+  }
+
   void print() {
     Node* current = head;
 
-    if (!current)
+    if (!current) {
+      cout << "List is empty" << endl;
       return;
+    }
 
     while (current) {
       cout << current->data << " ";
@@ -130,8 +146,10 @@ public:
   void print_reverse() {
     Node* current = tail;
 
-    if (!current)
+    if (!current) {
+      cout << "List is empty" << endl;
       return;
+    }
 
     while (current) {
       cout << current->data << " ";
@@ -154,7 +172,6 @@ public:
 int main() {
   DoublyLinkedList list;
 
-  // add some numbers
   list.push_back(10);
   list.push_back(20);
   list.push_back(30);
@@ -166,21 +183,29 @@ int main() {
 
   // delete the head by value
   list.delete_val(10);
-  cout << "After deleting 10 (head): ";
+  cout << "After delete_val(10): ";
   list.print();
 
-  // delete a middle node by value
-  list.delete_val(30);
-  cout << "After deleting 30 (middle): ";
-  list.print();
-
-  // delete the tail by value
-  list.delete_val(50);
-  cout << "After deleting 50 (tail): ";
+  // remove the first node
+  list.pop_front();
+  cout << "After pop_front(): ";
   list.print();
 
   cout << "Backward: ";
   list.print_reverse();
+
+  // test a list with one node
+  DoublyLinkedList singleList;
+  singleList.push_back(99);
+  singleList.pop_front();
+
+  cout << "Single-node list after pop_front(): ";
+  singleList.print();
+
+  // test an empty list
+  singleList.pop_front();
+  cout << "Empty list after pop_front(): ";
+  singleList.print();
 
   return 0;
 }
